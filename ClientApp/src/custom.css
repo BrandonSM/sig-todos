@@ -1,0 +1,27 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.details-font {
+  font-size:xx-small;
+}
+
+.child-font {
+  font-size: small;
+  color: #7a7c7f;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.btn:disabled {
+  opacity: .4;
+}
