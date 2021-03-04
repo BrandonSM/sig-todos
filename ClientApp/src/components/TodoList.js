@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Accordion, Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import CustomDateInput from '../components/CustomDateInput';
+import CustomDetailsToggle from '../components/CustomDetailsToggle';
 import "react-datepicker/dist/react-datepicker.css";
 import { ArrowReturnRight } from 'react-bootstrap-icons';
 
@@ -23,17 +24,13 @@ function TodoList() {
         let data = res.data;
         let todosList = data.sort((a, b) => {return a.id - b.id});
         let finalList = _sortParentChildList(todosList);
-
         setTodos(finalList);
-
-        console.log("make get request ----");
-        console.log(finalList);
 
         let parents = finalList.filter((parent) => parent.parentId == null && parent.isComplete === false);
         setParentTodos(parents);
     };
 
-    // Add the todo to the list
+    // Add the todo to the list and reset everything
     async function _handleAdd() {
         let todoParentFormatted = '';
         if (todoParent === '') {
@@ -41,9 +38,6 @@ function TodoList() {
         } else {
             todoParentFormatted = Number(todoParent);
         }
-        console.log("adding - " + todoName);
-        console.log("todoParent - " + todoParent);
-        console.log("todoDescription - " + todoDescription);
         await axios.post('https://localhost:5001/api/Todo', {
             name: todoName,
             isComplete: false,
@@ -63,15 +57,13 @@ function TodoList() {
         setTodoParent(e.target.value);
     };
 
-    // Delete a Todo
+    // Delete the selected todo
     async function _handleDelete(todo) {
-        console.log("deleting - " + todo.name);
 
         if (todo.parentId === null) {
             let tempChildrenList = todos.filter(childTodo => childTodo.parentId === todo.id);
             console.log(tempChildrenList);
             tempChildrenList.forEach((tempChild) => {
-                console.log(tempChild.id);
                 axios.delete('https://localhost:5001/api/Todo/' + tempChild.id, {})
             })
         }
@@ -81,7 +73,6 @@ function TodoList() {
     };
 
     async function _handleComplete(todo) {
-        console.log("completing - " + todo.id);
 
         // Check if parent is closing and if true, close all children that are not closed
         if (todo.parentId === null && todo.isComplete === false) {
@@ -95,7 +86,6 @@ function TodoList() {
             });
 
             let tempChildrenList = todos.filter(childTodo => childTodo.parentId === todo.id);
-            console.log(tempChildrenList);
 
             for (const childItem of tempChildrenList) {
                 if(childItem.isComplete === false ) {
@@ -125,15 +115,11 @@ function TodoList() {
                     deadlineDate: todo.deadlineDate
                 });
             }
+
             let tempChildrenList = todos.filter(childTodo => childTodo.parentId === todo.parentId && childTodo.id !== todo.id);
-            console.log(tempChildrenList);
             let parentTodoItem = todos.find(todoItem => todoItem.id === todo.parentId);
-            console.log(parentTodoItem);
 
             let results = tempChildrenList.some(obj => obj.isComplete === false);
-            console.log(results);
-
-
 
             if (!results) {
                 await axios.put('https://localhost:5001/api/Todo/' + parentTodoItem.id, {
@@ -149,6 +135,7 @@ function TodoList() {
         }
     };
 
+    // Sort the todos with a parent > child relationship
     function _sortParentChildList(todosList) {
         let parentChildList = [];
 
@@ -326,8 +313,11 @@ function TodoList() {
                                     <button type="button" className="btn btn-sm btn-danger ml-1" onClick={() => _handleDelete(todo)}>✕</button>
                                     <div style={{ width: "100%" }}></div>
                                     <span className={`details-font`}>
-                                        {showDescription ? ("click for details...") : (<span>&nbsp;</span>)}
+                                        {showDescription ? ("[+]") : (<span>&nbsp;</span>)}
                                     </span>
+                                   {/* <CustomDetailsToggle>
+                                        [+]
+                                   </CustomDetailsToggle>*/}
                                 </div>
                                 </Accordion.Toggle>
                                 {showDescription &&
