@@ -11,7 +11,7 @@ git clone https://github.com/BrandonSM/sig-todos/ sig-todos
 
 Change directory into the "ClientApp" folder
 ```
-cd sig-todo/ClientApp
+cd sig-todos/ClientApp
 ```
 
 Install the node dependencies in the ClientApp folder
