@@ -154,7 +154,7 @@ function TodoList() {
 
         return parentChildList;
     };
-    
+
     // Run when the setTodos method is called 
     useEffect(() => {
         makeGetRequest();
