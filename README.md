@@ -9,7 +9,7 @@ Clone the repo
 git clone https://github.com/BrandonSM/sig-todos/ sig-todos
 ```
 
-Change directory into the \ClientApp folder
+Change directory into the "ClientApp" folder
 ```
 cd sig-todo/ClientApp
 ```
