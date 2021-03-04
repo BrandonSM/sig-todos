@@ -2,11 +2,11 @@ import * as React from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Accordion, Container, Form, FormControl, InputGroup } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
 import CustomDateInput from '../components/CustomDateInput';
-import CustomDetailsToggle from '../components/CustomDetailsToggle';
-import "react-datepicker/dist/react-datepicker.css";
-import { ArrowReturnRight } from 'react-bootstrap-icons';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ArrowReturnRight, JournalText } from 'react-bootstrap-icons';
+import CustomDetailsToggle from './CustomDetailsToggle';
 
 function TodoList() {
 
@@ -60,9 +60,9 @@ function TodoList() {
     // Delete the selected todo
     async function _handleDelete(todo) {
 
+        // If the todo being deleted is a parent, delete all the children
         if (todo.parentId === null) {
             let tempChildrenList = todos.filter(childTodo => childTodo.parentId === todo.id);
-            console.log(tempChildrenList);
             tempChildrenList.forEach((tempChild) => {
                 axios.delete('https://localhost:5001/api/Todo/' + tempChild.id, {})
             })
@@ -72,6 +72,7 @@ function TodoList() {
         await makeGetRequest();
     };
 
+    // Complete the todo
     async function _handleComplete(todo) {
 
         // Check if parent is closing and if true, close all children that are not closed
@@ -139,7 +140,7 @@ function TodoList() {
     function _sortParentChildList(todosList) {
         let parentChildList = [];
 
-        // Get the name of each item in the list
+        // Go through each todo and determine if a parent or child and add to list
         todosList.forEach((todo) => {
             if (todo.parentId === null) {
                 parentChildList.push(todo)
@@ -153,50 +154,51 @@ function TodoList() {
 
         return parentChildList;
     };
-
-
-    /* Run when the setTodos method is called */
+    
+    // Run when the setTodos method is called 
     useEffect(() => {
         makeGetRequest();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setTodos]);
 
     return (
         <>
             <h2>SIG Todo List</h2>
             <hr />
-            <div className="container">
-                <div className="row">
-                    <div className="w-50 pr-2 d-flex-column">
-                        <InputGroup className="mb-3">
+            <div className={`container`}>
+                <div className={`row`}>
+                    <div className={`w-50 pr-2 d-flex-column`}>
+                        <InputGroup className={`mb-3`}>
                             <InputGroup.Prepend>
-                                <InputGroup.Text id="name-input">Name:</InputGroup.Text>
+                                <InputGroup.Text id={`name-input`}>Name:</InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl
-                                type="text"
-                                placeholder="Enter the Todo name"
-                                aria-label="Name"
-                                aria-describedby="name-input"
+                                type={`text`}
+                                placeholder={`Enter the Todo name`}
+                                aria-label={`Name`}
+                                aria-describedby={`name-input`}
                                 value={todoName}
                                 onChange={(e) => setTodoName(e.target.value)}
+                                maxLength={35}
                             />
                         </InputGroup>
-                        <InputGroup className="mb-3">
+                        <InputGroup className={`mb-3`}>
                             <InputGroup.Prepend>
-                                <InputGroup.Text id="details-input">Details:</InputGroup.Text>
+                                <InputGroup.Text id={`details-input`}>Details:</InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl
-                                type="text"
-                                placeholder="Enter the Todo details (optional)"
-                                aria-label="Details"
-                                aria-describedby="details-input"
+                                type={`text`}
+                                placeholder={`Enter the Todo details (optional)`}
+                                aria-label={`Details`}
+                                aria-describedby={`details-input`}
                                 value={todoDescription}
                                 onChange={(e) => setTodoDescription(e.target.value)}
                             />
                         </InputGroup>
-                        <Form inline className="align-items-start"> 
-                        <InputGroup className="mb-3">
+                        <Form inline className={`align-items-start`}> 
+                        <InputGroup className={`mb-3`}>
                                 <InputGroup.Prepend>
-                                    <InputGroup.Text id="date-input">Deadline:</InputGroup.Text>
+                                    <InputGroup.Text id={`date-input`}>Deadline:</InputGroup.Text>
                                 </InputGroup.Prepend>
                                 <DatePicker
                                     selected={deadlineDate}
@@ -204,18 +206,19 @@ function TodoList() {
                                     customInput={<CustomDateInput/>}
                                 />
                             </InputGroup>
+                            <div style={{ width: `100%` }}></div>
                             {parentTodos.length > 0 ?
                                 (         
                                     <>    
-                                <InputGroup className="mb-3">
+                                <InputGroup className={`mb-3`}>
                                     <InputGroup.Prepend>
-                                        <InputGroup.Text id="parent-input">Parent Todo:</InputGroup.Text>
+                                        <InputGroup.Text id={`parent-input`}>Parent Todo:</InputGroup.Text>
                                     </InputGroup.Prepend>
                                     <FormControl
-                                        as="select"
-                                        className="mr-sm-2"
-                                        name="parentTodo"
-                                        id="parentTodo"
+                                        as={`select`}
+                                        className={`mr-sm-2`}
+                                        name={`parentTodo`}
+                                        id={`parentTodo`}
                                         value={todoParent}
                                         custom
                                         onChange={(e) => _handleSelectChange(e)}
@@ -232,12 +235,12 @@ function TodoList() {
                                 ) 
                                 : (null)
                             }
-                            <div style={{ width: "100%" }}></div>
-                            <button type="button" className="btn btn-warning justify-start" onClick={() => _handleAdd()}>ADD THE TODO</button>
+                            <div style={{ width: `100%` }}></div>
+                            <button type={`button`} className={`btn btn-warning justify-start`} disabled={todoName ? (false) : (true)} onClick={() => _handleAdd()}>ADD THE TODO</button>
                         </Form> 
-                        <div className="w-100 pr-2 mt-5 d-flex-column">
+                        <div className={`w-100 pr-2 mt-5 d-flex-column`}>
                             <h2>Instructions</h2>
-                            <div className="w-100 mb-4 d-flex-column">
+                            <div className={`w-100 mb-4 d-flex-column`}>
                                 <ul>
                                     <li>Enter the name of the Todo</li>
                                     <li>Enter the todo details (optional)</li>
@@ -247,15 +250,15 @@ function TodoList() {
                                 </ul>
                             </div>
                             <h2 className={`mb-3`}>How it works</h2>
-                            <div className="w-100 my-1 d-flex">
-                                <button type="button" className="btn btn-sm btn-success justify-start">◯</button>
-                                <span className="ml-2 flex-grow-1" style={{ lineHeight: 2 }}>this button completes the Todo</span>
+                            <div className={`w-100 my-1 d-flex`}>
+                                <button type={`button`} className={`btn btn-sm btn-outline-dark ml-1 complete-color justify-start`}>◯</button>
+                                <span className={`ml-2 flex-grow-1`} style={{ lineHeight: 2 }}>this button completes the Todo</span>
                             </div>
-                            <div className="w-100 d-flex">
-                                <button type="button" className="btn btn-sm btn-danger justify-start">✕</button>
-                                <span className="ml-2 flex-grow-1"  style={{ lineHeight: 2 }}>this button delets the Todo (and children)</span>
+                            <div className={`w-100 d-flex`}>
+                                <button type={`button`} className={`btn btn-sm btn-outline-dark ml-1 delete-color justify-start`}>✕</button>
+                                <span className={`ml-2 flex-grow-1`} style={{ lineHeight: 2 }}>this button delets the Todo (and children)</span>
                             </div>
-                            <div className="w-100 pr-2 d-flex-column mt-4">
+                            <div className={`w-100 pr-2 d-flex-column mt-4`}>
                                 <li>When a parent todo is closed, all of the children close.</li>
                                 <li>When all of the child todos close, the parent will close.</li>
                                 <li>Deleting a parent todo will delete all child todos.</li>
@@ -263,25 +266,33 @@ function TodoList() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-50 pl-2 pr-0">
+                    <div className={`w-50 pl-2 pr-0`}>
                         {todos.map((todo, index) => {
+                            // Set the background color of the todo based on if parent or child, and if overdue
+                            let formattedDate = new Date(todo.deadlineDate).toLocaleDateString("en-us");
+                            let todaysDate = new Date().toDateString();
 
-                            // format the date
-                            let formattedDate = new Date(todo.deadlineDate).toLocaleDateString('en-US');
+                            let todoBackgroundStyle = "";
+                            let detailsBackgroundStyle = "";
+
+                            if (!todo.parentId) {
+                                todoBackgroundStyle = "parent-bg-color";
+
+                                if (new Date(formattedDate) < new Date(todaysDate)) {
+                                    todoBackgroundStyle = "overdue-bg-color"
+                                } 
+                            } else {
+                                todoBackgroundStyle = "child-bg-color";
+
+                                if (new Date(formattedDate) < new Date(todaysDate)) {
+                                    todoBackgroundStyle = "overdue-bg-color"
+                                }
+                            }
 
                             // set the action buttons' status
                             let buttonDisabled = false; 
                             if (todo.isComplete === true) {
                                 buttonDisabled = true;
-                            }
-                            
-                            // Remove the bottom border if there are details
-                            let borderBottomVal;
-                            if (index < todos.length-1) {
-                                borderBottomVal = 0;
-                            } 
-                            if (index >= todos.length-1) {
-                                borderBottomVal = '1px solid rgba(0, 0, 0, 0.125)';
                             }
 
                             // If there is a description and the todo is not complete, show the expand option and detiails otherwise hide them
@@ -293,37 +304,33 @@ function TodoList() {
                             return (
                             <Accordion key={todo.id}>
                                 <Accordion.Toggle as={Container} eventKey={todo.id} className={`p-0`}>
-                                <div key={todo.id} style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderBottom: borderBottomVal, backgroundColor: new Date(new Date(todo.deadlineDate).toDateString()) < new Date(new Date().toDateString()) ? ("#f8d7da") : ("var(--white)") }} className={`d-inline-flex flex-wrap list-group-item py-1 px-1 justify-content-between w-100`}>
-                                    {todo.parentId && (<ArrowReturnRight size={16} className="mr-1" style={{ color: "#7a7c7f"}}/>)}
-                                    <span className={`mr-auto ${todo.parentId && ("child-font")}`}>
+                                <div key={todo.id} className={`d-inline-flex flex-wrap list-group-item py-1 px-2 justify-content-between w-100 ${todoBackgroundStyle}`}>
+                                    {todo.parentId && (<ArrowReturnRight size={28} className={`mr-1 white-font-style`}/>)}
+                                    <span style={{ lineHeight: '31px' }} className={`mr-auto white-font-style ${todo.parentId && (`child-font`)}`}>
                                         {todo.isComplete === true
                                             ? (<del>{todo.name}</del>)
                                             : (todo.name)
                                         }
                                     </span>
-                                    <span className={`mx-2 ${todo.parentId && ("child-font")}`}>
+                                    <span style={{ lineHeight: '31px' }} className={`mx-2 white-font-style ${todo.parentId && (`child-font`)}`}>
                                         {todo.isComplete === true 
                                             ? (<del>{formattedDate}</del>) 
                                             : (formattedDate)}
                                     </span>                                    
-                                    <button type="button" className="btn btn-sm btn-success ml-1" onClick={() => _handleComplete(todo)} disabled={buttonDisabled}>
+                                    <button type={`button`} className={`btn btn-sm btn-light ml-1 complete-color`} onClick={() => _handleComplete(todo)} disabled={buttonDisabled}>
                                         {todo.isComplete === true
-                                            ? ("✓")
-                                            : ("◯")}</button>
-                                    <button type="button" className="btn btn-sm btn-danger ml-1" onClick={() => _handleDelete(todo)}>✕</button>
-                                    <div style={{ width: "100%" }}></div>
-                                    <span className={`details-font`}>
-                                        {showDescription ? ("[+]") : (<span>&nbsp;</span>)}
-                                    </span>
-                                   {/* <CustomDetailsToggle>
-                                        [+]
-                                   </CustomDetailsToggle>*/}
+                                            ? (`✓`)
+                                            : (`◯`)}</button>
+                                    <button type={`button`} className={`btn btn-sm btn-light ml-1 delete-color`} onClick={() => _handleDelete(todo)}>✕</button>
+                                    <div style={{ width: `100%` }}></div>
+                                    {todo.description && (<CustomDetailsToggle eventKey={todo.id}></CustomDetailsToggle>)}
                                 </div>
                                 </Accordion.Toggle>
                                 {showDescription &&
                                             <Accordion.Collapse eventKey={todo.id}>
-                                                    <div key={todo.id} style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: new Date(new Date(todo.deadlineDate).toDateString()) < new Date(new Date().toDateString()) ? ("#f8d7da") : ("var(--white)") }} className={`d-inline-flex flex-wrap list-group-item justify-content-between w-100 ${index === todos.length+1 ? ("border-top") : ("border-top-0")}`}>
-                                                        Details: {todo.description}
+                                                    <div key={todo.id}  className={`d-flex-column flex-wrap px-2 list-group-item justify-content-between w-100 ${detailsBackgroundStyle}`} style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, borderTop: 0 }}>
+                                                        <div style={{ lineHeight: 1}}><JournalText size={16} className={`mr-2`}/><span className={`font-small`}>{todo.name} details:</span></div>
+                                                        <p className={`mt-2`}>{todo.description}</p>
                                                     </div>
                                             </Accordion.Collapse>
                                 }

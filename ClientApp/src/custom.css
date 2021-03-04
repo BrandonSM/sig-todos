@@ -9,12 +9,20 @@ code {
 
 .details-font {
   font-size:xx-small;
-  color:#7a7c7f;
+  color:#FFFFFF;
 }
 
 .child-font {
   font-size: small;
   color: #7a7c7f;
+}
+
+.complete-color {
+  color:green;
+}
+
+.delete-color {
+  color:red;
 }
 
 .btn-primary {
@@ -23,6 +31,38 @@ code {
   border-color: #1861ac;
 }
 
+.font-small {
+  font-size:small;
+}
+
 .btn:disabled {
   opacity: .4;
+}
+
+.overdue-bg-color {
+  background-color: #ED9BA4;
+}
+
+.parent-bg-color {
+  background-color:#3848DC;
+}
+
+.details-bg-color {
+  background-color: #FFFFFF;
+}
+
+.child-bg-color {
+  background-color: #38B5DC;
+}
+
+.child-details-bg-color {
+  background-color: #62C5E3;
+}
+
+.white-font-style {
+  color:#FFF;
+}
+
+.toggle-font-style {
+  color: #FFFFEF
 }
