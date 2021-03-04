@@ -23,3 +23,8 @@ Run the dotnet project
 ```
 dotnet run
 ```
+
+Open the app in your browser
+```
+https://localhost:5001/
+```
