@@ -196,7 +196,7 @@ function TodoList() {
                             />
                         </InputGroup>
                         <Form inline className={`align-items-start`}> 
-                        <InputGroup className={`mb-3`}>
+                            <InputGroup className={`mb-3`}>
                                 <InputGroup.Prepend>
                                     <InputGroup.Text id={`date-input`}>Deadline:</InputGroup.Text>
                                 </InputGroup.Prepend>
@@ -223,12 +223,12 @@ function TodoList() {
                                         custom
                                         onChange={(e) => _handleSelectChange(e)}
                                     >
-                                        <option value={''}>Select (optional)...</option>
-                                        {parentTodos.map((parent) => {
-                                            return (
-                                                <option value={parent.id} key={parent.id}>{parent.name}</option>
-                                            )
-                                        })}
+                                    <option value={''}>Select (optional)...</option>
+                                    {parentTodos.map((parent) => {
+                                        return (
+                                            <option value={parent.id} key={parent.id}>{parent.name}</option>
+                                        )
+                                    })}
                                     </FormControl>
                                 </InputGroup>
                                 </>
@@ -295,6 +295,8 @@ function TodoList() {
                                 buttonDisabled = true;
                             }
 
+                            let isComplete = todo.isComplete;
+
                             // If there is a description and the todo is not complete, show the expand option and detiails otherwise hide them
                             let showDescription = false;
                             if (todo.description !== "" && todo.isComplete === false) {
@@ -323,16 +325,16 @@ function TodoList() {
                                             : (`◯`)}</button>
                                     <button type={`button`} className={`btn btn-sm btn-light ml-1 delete-color`} onClick={() => _handleDelete(todo)}>✕</button>
                                     <div style={{ width: `100%` }}></div>
-                                    {todo.description && (<CustomDetailsToggle eventKey={todo.id}></CustomDetailsToggle>)}
+                                    {todo.description && (<CustomDetailsToggle eventKey={todo.id} isComplete={todo.isComplete}></CustomDetailsToggle>)}
                                 </div>
                                 </Accordion.Toggle>
                                 {showDescription &&
-                                            <Accordion.Collapse eventKey={todo.id}>
-                                                    <div key={todo.id}  className={`d-flex-column flex-wrap px-2 list-group-item justify-content-between w-100 ${detailsBackgroundStyle}`} style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, borderTop: 0 }}>
-                                                        <div style={{ lineHeight: 1}}><JournalText size={16} className={`mr-2`}/><span className={`font-small`}>{todo.name} details:</span></div>
-                                                        <p className={`mt-2`}>{todo.description}</p>
-                                                    </div>
-                                            </Accordion.Collapse>
+                                    <Accordion.Collapse eventKey={todo.id}>
+                                        <div key={todo.id} className={`d-flex-column flex-wrap px-2 list-group-item justify-content-between w-100 ${detailsBackgroundStyle}`} style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, borderTop: 0 }}>
+                                            <div style={{ lineHeight: 1}}><JournalText size={16} className={`mr-2`}/><span className={`font-small`}>{todo.name} details:</span></div>
+                                            <p className={`mt-2`}>{todo.description}</p>
+                                        </div>
+                                    </Accordion.Collapse>
                                 }
                             </Accordion>
                             )

@@ -12,6 +12,10 @@ code {
   color:#FFFFFF;
 }
 
+.hide-details-toggle {
+  display:none;
+}
+
 .child-font {
   font-size: small;
   color: #7a7c7f;

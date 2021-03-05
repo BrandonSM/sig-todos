@@ -1,8 +1,7 @@
 import React, {useContext} from 'react';
 import AccordionContext from 'react-bootstrap/AccordionContext';
-import {useAccordionToggle} from 'react-bootstrap/AccordionToggle';
 
-export default function CustomDetailsToggle({eventKey, callback}) {
+export default function CustomDetailsToggle({eventKey, isComplete, callback}) {
   
   // Get the current key from the Accordion being clicked
   const currentEventKey = useContext(AccordionContext);
@@ -11,6 +10,6 @@ export default function CustomDetailsToggle({eventKey, callback}) {
   const isCurrentEventKey = currentEventKey === eventKey;
 
   return (
-        <span className={`details-font`}>{isCurrentEventKey ? '[collapse details]' : '[expand details]'}</span>
+      <span className={`details-font ${isComplete && ("hide-details-toggle")}`}>{isCurrentEventKey ? '[collapse details]' : '[expand details]'}</span>
   );
 };
