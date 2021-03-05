@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import AccordionContext from 'react-bootstrap/AccordionContext';
 
-export default function CustomDetailsToggle({eventKey, isComplete, callback}) {
+export default function CustomDetailsToggle({eventKey, isComplete}) {
   
   // Get the current key from the Accordion being clicked
   const currentEventKey = useContext(AccordionContext);
