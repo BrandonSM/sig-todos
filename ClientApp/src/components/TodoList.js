@@ -320,7 +320,8 @@ function TodoList() {
                                     <button type={`button`} className={`btn btn-sm btn-light ml-1 complete-color`} onClick={() => _handleComplete(todo)} disabled={buttonDisabled}>
                                         {todo.isComplete === true
                                             ? (`✓`)
-                                            : (`◯`)}</button>
+                                            : (`◯`)}
+                                    </button>
                                     <button type={`button`} className={`btn btn-sm btn-light ml-1 delete-color`} onClick={() => _handleDelete(todo)}>✕</button>
                                     <div style={{ width: `100%` }}></div>
                                     {todo.description && (<CustomDetailsToggle eventKey={todo.id} isComplete={todo.isComplete}></CustomDetailsToggle>)}
