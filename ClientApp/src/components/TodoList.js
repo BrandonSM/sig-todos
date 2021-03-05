@@ -295,8 +295,6 @@ function TodoList() {
                                 buttonDisabled = true;
                             }
 
-                            let isComplete = todo.isComplete;
-
                             // If there is a description and the todo is not complete, show the expand option and detiails otherwise hide them
                             let showDescription = false;
                             if (todo.description !== "" && todo.isComplete === false) {
