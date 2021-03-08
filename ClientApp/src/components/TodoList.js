@@ -155,6 +155,22 @@ function TodoList() {
         return parentChildList;
     };
 
+    // Add a Todo whenever ENTER is pressed
+    useEffect(() => {
+        if (todoName) {
+            const listener = event => {
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+                console.log("Enter key was pressed. Run your function.");
+                _handleAdd();
+            }
+            };
+            document.addEventListener("keydown", listener);
+            return () => {
+            document.removeEventListener("keydown", listener);
+            };
+        }
+      }, [todoName]);
+
     // Run when the setTodos method is called 
     useEffect(() => {
         makeGetRequest();
@@ -208,8 +224,7 @@ function TodoList() {
                             </InputGroup>
                             <div style={{ width: `100%` }}></div>
                             {parentTodos.length > 0 ?
-                                (         
-                                    <>    
+                                (           
                                 <InputGroup className={`mb-3`}>
                                     <InputGroup.Prepend>
                                         <InputGroup.Text id={`parent-input`}>Parent Todo:</InputGroup.Text>
@@ -231,7 +246,6 @@ function TodoList() {
                                     })}
                                     </FormControl>
                                 </InputGroup>
-                                </>
                                 ) 
                                 : (null)
                             }
@@ -295,7 +309,7 @@ function TodoList() {
                                 buttonDisabled = true;
                             }
 
-                            // If there is a description and the todo is not complete, show the expand/contract button and detiails, otherwise hide them
+                            // If there is a description and the todo is not complete, show the expand/contract button and details, otherwise hide them
                             let showDescription = false;
                             if (todo.description !== "" && todo.isComplete === false) {
                                 showDescription = true;
